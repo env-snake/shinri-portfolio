@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snake — Level Design &amp; Environment Art</title>
+<meta name="description" content="Портфолио Snake: Level Design &amp; Environment Art на Source Engine.">
+<meta property="og:title" content="Snake — Level Design &amp; Environment Art">
+<meta property="og:description" content="Портфолио: карты на Source Engine — Manga Style, Sci-Fi, оптимизация, портирование, шейдеры.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://env-snake.github.io/shinri-portfolio/">
+<meta property="og:image" content="https://env-snake.github.io/shinri-portfolio/media/konoha/01.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="media/favicon.png">
+<link rel="apple-touch-icon" href="media/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0e12;
+    --bg-2: #15171d;
+    --line: #262933;
+    --text: #e9e6e1;
+    --muted: #9a9aa3;
+    --accent: #ff9f43;
+    --accent-2: #ff6b4a;
+    --radius: 10px;
+    --gutter: clamp(16px, 4vw, 48px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Manrope", system-ui, sans-serif; font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  img, video { display: block; max-width: 100%; }
+
+  /* ---------- Шапка ---------- */
+  .topbar {
+    position: fixed; inset: 0 0 auto 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 14px var(--gutter);
+    background: linear-gradient(to bottom, rgba(13,14,18,.85), rgba(13,14,18,0));
+    transition: background .25s;
+  }
+  .topbar.solid { background: rgba(13,14,18,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 15px; letter-spacing: .02em; text-decoration: none; }
+  .brand img { width: 30px; height: 30px; border-radius: 50%; }
+  .brand b { color: var(--accent); font-weight: inherit; }
+  .nav { display: flex; align-items: center; }
+  .nav a.nav-cta {
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+    color: #fff; font-size: 14px; font-weight: 700; letter-spacing: .02em;
+    padding: 9px 18px 9px 14px; border-radius: 999px;
+    background: linear-gradient(135deg, #f28a2e, #d9481f);
+    border: 1px solid rgba(255,255,255,.22);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 6px 18px rgba(217,72,31,.35);
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    transition: transform .2s, box-shadow .2s, filter .2s;
+  }
+  .nav a.nav-cta .ico { width: 17px; height: 17px; }
+  .nav a.nav-cta:hover { transform: translateY(-1px); filter: brightness(1.08); box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 8px 24px rgba(242,138,46,.5); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; min-height: 100svh; display: flex; align-items: flex-end;
+    padding: 120px var(--gutter) clamp(48px, 9vh, 96px);
+    background: #000 url("media/konoha/01.jpg") center/cover no-repeat;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, var(--bg) 0%, rgba(13,14,18,.75) 35%, rgba(13,14,18,.15) 70%, rgba(13,14,18,.45) 100%);
+  }
+  .hero-inner { position: relative; max-width: 860px; }
+  .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+  .hero h1 {
+    font-family: "Unbounded", sans-serif; font-weight: 700;
+    font-size: clamp(38px, 7vw, 84px); line-height: 1.02; margin: 0; letter-spacing: -.01em;
+  }
+
+  /* ---------- Разделы ---------- */
+  main { padding: 0 var(--gutter); max-width: 1440px; margin: 0 auto; }
+  .section { padding: clamp(56px, 9vw, 110px) 0 20px; }
+  .section-head { display: grid; gap: 10px; margin-bottom: clamp(32px, 5vw, 56px); border-top: 1px solid var(--line); padding-top: 28px; }
+  .section-num { font-family: "Unbounded", sans-serif; font-size: 13px; color: var(--accent); letter-spacing: .1em; }
+  .section-head h2 { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: clamp(28px, 4.4vw, 52px); line-height: 1.1; margin: 0; }
+  .section-head p { color: var(--muted); margin: 0; max-width: 680px; }
+
+  .project { margin: 0 0 clamp(64px, 9vw, 120px); }
+  .project-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 18px; }
+  .project h3 { font-family: "Unbounded", sans-serif; font-weight: 500; font-size: clamp(22px, 2.8vw, 34px); margin: 0; }
+  .project .desc { color: var(--muted); margin: 0 0 22px; max-width: 760px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 12px; font-weight: 600; color: var(--accent); border: 1px solid rgba(255,159,67,.35); padding: 3px 10px; border-radius: 999px; }
+
+  .videos { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); margin-bottom: 14px; }
+  .video { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .video video { width: 100%; aspect-ratio: 16/9; background: #000; }
+  .video figcaption { font-size: 13px; color: var(--muted); padding: 10px 14px; display: flex; justify-content: space-between; gap: 10px; }
+
+  .gallery { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+  .gallery button {
+    all: unset; cursor: zoom-in; position: relative; border-radius: 8px; overflow: hidden;
+    aspect-ratio: 16/9; background: var(--bg-2);
+  }
+  .gallery button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease, filter .3s; }
+  .gallery button:hover img { transform: scale(1.04); filter: brightness(1.08); }
+  .gallery.collapsed button:nth-child(n+9) { display: none; }
+  .gallery.wide { grid-template-columns: 1fr; }
+  .gallery.wide button { aspect-ratio: auto; }
+  .gallery.wide img { height: auto; object-fit: contain; }
+  .group-title {
+    display: flex; align-items: center; gap: 14px; margin: 0 0 clamp(28px, 4vw, 44px);
+    font: 700 13px "Manrope", sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--accent);
+  }
+  .group-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: clamp(20px, 3vw, 44px); align-items: center; margin-bottom: 14px; }
+  .split .videos { margin: 0; grid-template-columns: 1fr; }
+  .split .project-head { flex-direction: column; align-items: flex-start; }
+  @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+  .show-all {
+    margin-top: 14px; font: 600 14px "Manrope", sans-serif; color: var(--text);
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 18px; cursor: pointer;
+  }
+  .show-all:hover { border-color: var(--accent); }
+
+  .ico { width: 16px; height: 16px; flex: none; }
+  .c-label .ico { width: 18px; height: 18px; color: var(--text); }
+  .contact.preferred .c-label .ico { color: #29a9eb; }
+  .old-links a { display: inline-flex; align-items: center; gap: 8px; }
+  .hero-lead { font-size: clamp(16px, 1.5vw, 18px); color: #d6d3cd; max-width: 620px; margin: 18px 0 22px; }
+  .hero-tg {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; font-size: 15px;
+    padding: 10px 18px; border-radius: 999px; background: rgba(41,169,235,.14); border: 1px solid rgba(41,169,235,.5);
+    transition: background .2s;
+  }
+  .hero-tg:hover { background: rgba(41,169,235,.26); }
+  .hero-tg .ico { width: 20px; height: 20px; color: #29a9eb; }
+  .extra { margin: -8px 0 22px; }
+  .extra summary {
+    cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 8px; background: var(--bg-2); border: 1px solid var(--line);
+  }
+  .extra summary::-webkit-details-marker { display: none; }
+  .extra summary::after { content: "▾"; color: var(--accent); transition: transform .2s; }
+  .extra[open] summary::after { transform: rotate(180deg); }
+  .extra summary span { color: var(--accent); }
+  .extra summary:hover { border-color: var(--accent); }
+  .extra .tags { margin-top: 12px; max-width: 900px; }
+
+  .gallery.steps { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .gallery .cap {
+    position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: baseline; gap: 10px;
+    padding: 28px 16px 12px; font-weight: 700; font-size: 15px; color: #fff;
+    background: linear-gradient(to top, rgba(0,0,0,.8), rgba(0,0,0,0));
+  }
+  .gallery .cap b { font-family: "Unbounded", sans-serif; font-size: 13px; color: var(--accent); }
+
+  .project { scroll-margin-top: 80px; }
+  .desc a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  .desc a.ext { display: inline-flex; align-items: center; gap: 5px; vertical-align: -2px; }
+  .desc a.ext img { width: 16px; height: 16px; }
+  .desc code {
+    font-family: Consolas, "JetBrains Mono", monospace; font-size: .92em; color: #ffd2a6;
+    background: #1d2029; border: 1px solid var(--line); padding: 1px 6px; border-radius: 5px;
+  }
+  .wip {
+    font-size: .8em; font-weight: 700; letter-spacing: .06em; color: #16110a; background: var(--accent);
+    padding: 1px 8px; border-radius: 999px; white-space: nowrap;
+  }
+
+  /* Вертикальная навигация */
+  .rail { display: none; }
+  @media (min-width: 1100px) {
+    main { padding-right: max(var(--gutter), calc(220px - max(0px, (100vw - 1440px) / 2))); }
+    .rail {
+      display: block; position: fixed; z-index: 15; right: 22px; top: 50%; transform: translateY(-50%);
+      padding: 14px 16px 14px 18px; border-radius: 14px;
+      background: rgba(13,14,18,.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.06);
+    }
+    .rail ol { list-style: none; margin: 0; padding: 0; }
+    .rail-track { position: absolute; right: 16px; top: 16px; bottom: 16px; width: 2px; background: var(--line); border-radius: 2px; }
+    .rail-fill { width: 100%; height: 0; background: var(--accent); border-radius: 2px; transition: height .15s linear; }
+    .rail a {
+      position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+      padding: 6px 0; text-decoration: none; color: var(--muted); transition: color .2s;
+    }
+    .rail a:hover { color: var(--text); }
+    .rail .lbl { font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .rail .lbl b { font-family: "Unbounded", sans-serif; font-size: 11px; font-weight: 500; margin-right: 8px; color: var(--muted); }
+    .rail i { display: block; width: 12px; height: 2px; background: #3a3e4a; border-radius: 2px; transition: width .25s, background .25s; margin-right: 2px; }
+    .rail-sec > a { padding: 8px 0; }
+    .rail-sec > a .lbl { font-size: 14px; }
+    .rail-subs { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .35s ease, opacity .25s; }
+    .rail-sec.open .rail-subs { max-height: 260px; opacity: 1; }
+    .rail-subs .lbl { font-size: 12px; font-weight: 500; }
+    .rail-subs i { width: 6px; }
+    .rail-sec.open > a { color: var(--text); }
+    .rail-sec.open > a .lbl b { color: var(--accent); }
+    .rail-sec.open > a i { width: 20px; background: var(--text); }
+    .rail a.active { color: var(--text); }
+    .rail a.active i { width: 26px; background: var(--accent); }
+    .rail-sec > a.active .lbl b { color: var(--accent); }
+  }
+
+  .part-label { margin: 22px 0 10px; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .part-label:first-child { margin-top: 0; }
+
+  .contacts { padding-bottom: 40px; }
+  .contact-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+  .contact {
+    all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 6px; align-content: start;
+    padding: 20px 22px; border-radius: var(--radius); background: var(--bg-2); border: 1px solid var(--line);
+    transition: border-color .2s, transform .2s;
+  }
+  .contact:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .contact:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .contact.preferred { border-color: var(--accent); background: linear-gradient(135deg, rgba(255,159,67,.14), var(--bg-2) 60%); }
+  .c-label { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .c-label em { font-style: normal; letter-spacing: .06em; color: #16110a; background: var(--accent); padding: 2px 8px; border-radius: 999px; font-size: 11px; }
+  .c-value { font-family: "Unbounded", sans-serif; font-size: 17px; font-weight: 500; color: var(--text); overflow-wrap: anywhere; }
+  .c-hint { font-size: 12px; color: var(--muted); }
+  .old-works { margin-top: 28px; display: grid; gap: 12px; }
+  .old-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .old-links a {
+    text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--bg-2); transition: border-color .2s;
+  }
+  .old-links a:hover { border-color: var(--accent); }
+
+  footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 28px var(--gutter) 40px; color: var(--muted); font-size: 14px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  /* ---------- Лайтбокс ---------- */
+  .lb { position: fixed; inset: 0; z-index: 50; background: rgba(5,6,8,.96); display: none; align-items: center; justify-content: center; }
+  .lb.open { display: flex; }
+  .lb img { max-width: calc(100vw - 32px); max-height: calc(100svh - 110px); border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+  .lb-btn {
+    position: absolute; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); color: #fff;
+    width: 48px; height: 48px; border-radius: 50%; font-size: 22px; cursor: pointer; display: grid; place-items: center;
+  }
+  .lb-btn:hover { background: rgba(255,255,255,.16); }
+  .lb-prev { left: 18px; top: 50%; transform: translateY(-50%); }
+  .lb-next { right: 18px; top: 50%; transform: translateY(-50%); }
+  .lb-close { right: 18px; top: 18px; }
+  .lb-count { position: absolute; bottom: 22px; left: 0; right: 0; text-align: center; font-size: 14px; color: var(--muted); }
+
+  @media (max-width: 640px) {
+    .nav a:not(.nav-cta) { display: none; }
+    .lb-prev, .lb-next { top: auto; bottom: 12px; transform: none; }
+    .gallery { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .gallery.collapsed button:nth-child(n+7) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="#top"><img src="media/avatar.png" alt=""><span>env<b>.</b>snake</span></a>
+  <nav class="nav" id="nav"></nav>
+</header>
+<nav class="rail" id="rail" aria-label="Разделы портфолио"><div class="rail-track"><div class="rail-fill" id="rail-fill"></div></div><ol id="rail-list"></ol></nav>
+
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <p class="eyebrow">Level Design &amp; Environment Art</p>
+    <h1>Snake</h1>
+    <p class="hero-lead">В этом портфолио собраны мои последние достойные работы — то, что я делал и делаю на сегодняшний день. Некоторые из них ещё не&nbsp;завершены&nbsp;—&nbsp;W.I.P.</p>
+    <a class="hero-tg" href="https://t.me/env_snk" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg><span>@env_snk</span></a>
+  </div>
+</section>
+
+<main id="content"></main>
+
+<section class="section contacts" id="contacts">
+  <div class="section-head">
+    <span class="section-num">Связь</span>
+    <h2>Контакты</h2>
+    <p>Быстрее всего отвечаю в Telegram.</p>
+  </div>
+  <div class="contact-grid">
+    <a class="contact preferred" href="https://t.me/env_snk" target="_blank" rel="noopener">
+      <span class="c-label"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Telegram <em>Preferred</em></span>
+      <span class="c-value">@env_snk</span>
+    </a>
+    <button class="contact" type="button" id="discord" data-copy="env_snake">
+      <span class="c-label"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>Discord</span>
+      <span class="c-value">env_snake</span>
+      <span class="c-hint">Нажмите, чтобы скопировать</span>
+    </button>
+    <a class="contact" href="https://steamcommunity.com/id/env_snake/" target="_blank" rel="noopener">
+      <span class="c-label"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>Steam</span>
+      <span class="c-value">env_snake</span>
+    </a>
+    <a class="contact" href="mailto:env_snake@hotmail.com">
+      <span class="c-label"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 5.5h18v13H3z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="m3.5 6 8.5 7 8.5-7"/></svg>Email</span>
+      <span class="c-value">env_snake@hotmail.com</span>
+    </a>
+  </div>
+  <div class="old-works">
+    <span class="c-label">Старые работы</span>
+    <div class="old-links">
+      <a href="https://www.artstation.com/env_snake" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M0 17.723l2.027 3.505h.001a2.424 2.424 0 0 0 2.164 1.333h13.457l-2.792-4.838H0zm24 .025c0-.484-.143-.935-.388-1.314L15.728 2.728a2.424 2.424 0 0 0-2.142-1.289H9.419L21.598 22.54l1.92-3.325c.378-.637.482-.919.482-1.467zm-11.129-3.462L7.428 4.858l-5.444 9.428h10.887z"/></svg>ArtStation</a>
+      <a href="https://steamcommunity.com/workshop/filedetails/?id=2990379895" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>Коллекция в Steam Workshop</a>
+      <a href="https://steamcommunity.com/id/env_snake/myworkshopfiles/" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>Все работы в Workshop</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Snake · Level Design &amp; Environment Art</span>
+  <a href="https://t.me/env_snk" target="_blank" rel="noopener">Telegram: @env_snk</a>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Просмотр изображения">
+  <img id="lb-img" alt="">
+  <button class="lb-btn lb-close" id="lb-close" aria-label="Закрыть">✕</button>
+  <button class="lb-btn lb-prev" id="lb-prev" aria-label="Предыдущее">‹</button>
+  <button class="lb-btn lb-next" id="lb-next" aria-label="Следующее">›</button>
+  <div class="lb-count" id="lb-count"></div>
+</div>
+
+<script>
+/*
+  Контент портфолио. Чтобы добавить работы:
+  - картинки кладутся в media/<slug>/NN.jpg и media/<slug>/thumb/NN.jpg
+  - видео в media/video/<name>.mp4 (+ постер <name>.jpg)
+  - раздел без проектов на сайте не показывается
+*/
+const SECTIONS = [
+  {
+    id: "env", nav: "Environment",
+    title: "Environment Art & Level Design",
+    about: "",
+    groups: [
+      {
+        title: "Пайплайн",
+        projects: [
+          {
+            slug: "pipeline", title: "Пайплайн работы над локацией", count: 4, steps: true,
+            captions: ["Референсы", "Грейбокс", "Настройка лайтинга, добавление деталей", "Финал"],
+            desc: "Путь одной локации, созданной в 2025 году, от подборки референсов и грейбокса до финального вида с освещением и постобработкой.",
+            tags: ["References", "Graybox", "Detailing", "Lighting"],
+            videos: []
+          }
+        ]
+      },
+      {
+        title: "Manga Style",
+        projects: [
+          {
+            slug: "greenforest", title: "Green Forest", count: 17,
+            desc: "Стилизованная локация на кастомных ассетах — созданных с нуля и портированных. На локации работают мой собственный <a href='#shader-grass'>вертексный шейдер травы</a> и <a href='#shader-sky'>стилизованный шейдер неба</a>.",
+            tags: ["Exterior", "Foliage", "Lighting"],
+            videos: [{ src: "greenforest", label: "Пролёт по карте" }]
+          },
+          {
+            slug: "ancientforest", title: "Ancient Forest", count: 20,
+            desc: "Ночной стилизованный лес на тех же ассетах, что и дневной, но с другим <code>$skin</code>. Локация сделана до появления кастомных шейдеров, поэтому на демонстрации они не используются.",
+            tags: ["Exterior", "Foliage", "Lighting"],
+            videos: [{ src: "forest-map", label: "Пролёт по карте" }, { src: "forest-dev", label: "Пролёт по карте" }]
+          },
+          {
+            slug: "konoha", title: "Konoha", count: 30,
+            desc: "Масштабная деревня по тематике «Наруто» — деревня скрытого листа Коноха. Работа включает комплексные сооружения с интерьерами и открытые территории для PvP. Все ассеты кастомные: половина портирована прямиком из <a class='ext' href='https://www.fab.com/' target='_blank' rel='noopener'><img src='media/fab.png' alt=''>Fab</a>, другая половина создана с нуля. На фото и видео показана лишь малая часть проекта. Несмотря на большой объём проделанной работы, на сегодняшний день она всё ещё <span class='wip'>W.I.P.</span>",
+            tags: ["Exterior", "Interior", "Lighting"],
+            videos: [{ src: "konoha", label: "Пролёт по карте" }]
+          },
+          {
+            slug: "senju", title: "Senju", count: 24,
+            desc: "Резиденция клана — часть деревни скрытого листа. Включает разные виды модульных комнат, все ассеты кастомные.",
+            tags: ["Interior", "Lighting"],
+            videos: [{ src: "senju-1", label: "Пролёт по локации" }, { src: "senju-2", label: "Прогулка по локации" }]
+          },
+          {
+            slug: "uchiwa", title: "Uchiwa", count: 21,
+            desc: "Резиденция клана в деревне скрытого листа. Как и резиденция Senju, включает кластеры разных комнат.",
+            tags: ["Interior", "Lighting"],
+            videos: [{ src: "uchiwa", label: "Пролёт по локации" }]
+          },
+          {
+            slug: "hospital", title: "Hospital", count: 9,
+            desc: "Больница Конохи: регистратура, коридоры, кабинеты, палаты и операционные. Сцена освещена с помощью кастомного шейдера <code>static_projected_light</code>, который позволяет добавлять детализированные источники света.",
+            tags: ["Interior", "Lighting"],
+            videos: []
+          },
+          {
+            slug: "yard", title: "Yard", count: 5,
+            desc: "Двор у полицейского участка в деревне скрытого листа. Скриншоты сделаны пару месяцев назад, поэтому качество картинки заметно хуже, чем у резиденций и других сооружений Конохи.",
+            tags: ["Exterior", "Lighting"],
+            videos: []
+          }
+        ]
+      },
+      {
+        title: "Sci-Fi",
+        projects: [
+          {
+            slug: "combine", title: "Combine Sector", count: 21,
+            desc: "Сектор Альянса для RP-сервера по тематике HL2, сделан пару месяцев назад. Большинство ассетов я лично портировал из <a href='#port-alyx'>Half-Life: Alyx</a> с поддержкой LOD-систем. Для освещения используется шейдер <code>static_projected_light</code>.",
+            tags: ["Interior", "Lighting", "Sci-Fi"],
+            videos: [
+              { src: "combine-cinematic", label: "Cinematic" },
+              { src: "combine-corridor", label: "Перекрёстный коридор" },
+              { src: "combine-hall", label: "Зал" }
+            ]
+          },
+          {
+            slug: "underwater", title: "Underwater Facility", count: 15,
+            desc: "Подводный комплекс, созданный мной для SCP-RP сервера. На карте есть кастомные ассеты, но большая часть работы сделана брашами с последующим переводом в модели.",
+            tags: ["Interior", "Lighting", "Sci-Fi"],
+            videos: [{ src: "underwater", label: "Пролёт по локации" }]
+          },
+          {
+            slug: "horror", title: "Horror Underwater Facility", count: 14,
+            parts: [{ label: "Морское дно", from: 1, to: 10 }, { label: "Технические отсеки", from: 11, to: 14 }],
+            desc: "Новая версия морского дна и общий стиль для новой карты подводной станции. Карта работает с кластерами кастомных шейдеров, которые я сделал специально для этих локаций. Сцена собрана из ассетов игры <a href='https://store.steampowered.com/app/282140/SOMA/' target='_blank' rel='noopener'>SOMA</a>, портированных <a href='#port-soma'>автоматическим конвейером</a>, который я написал сам.",
+            extra: {
+              title: "Кастомные underwater-шейдеры",
+              items: ["Volumetric Fog", "Depth Reconstruction", "Height / Depth Darkening", "Volumetric Lighting (unshadowed)",
+                      "Caustics", "Fog Noise", "Fog-to-Sky Blending", "DDOF", "HDR Bloom", "Film Grain", "Chromatic Aberration",
+                      "Lens Flares", "Radial Blur", "Video Distortion", "Image Trail", "Marine Snow", "Procedural Sky"]
+            },
+            tags: ["Exterior", "Interior", "Horror"],
+            videos: [{ src: "horror-underwater", label: "Пролёт по локации" }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "optimization", nav: "Оптимизация",
+    title: "Оптимизация уровней",
+    about: "Здесь показаны методы оптимизации, нестандартные для большинства мапперов: LOD-системы и разбиение пространства hint-брашами для оптимизации рендера.",
+    groups: [{
+      projects: [
+        {
+          slug: "hint", title: "Hint-браши", count: 1, wide: true,
+          desc: "Разбиение пространства hint-брашами на перекрёстке коридоров: вид в 3D и сверху в Hammer.",
+          tags: ["Hint", "Visleaf", "Hammer"],
+          videos: []
+        },
+        {
+          slug: "lod", title: "LOD-системы", count: 2, wide: true,
+          desc: "Сравнение уровней детализации r_lod 0 / 1 / 2 на моделях и пропах.",
+          tags: ["LOD", "Blender"],
+          videos: []
+        }
+      ]
+    }]
+  },
+  {
+    id: "porting", nav: "Портирование",
+    title: "Портирование ассетов",
+    about: "Перенос окружения из других игр в Source Engine: автоматический пайплайн и ручной порт.",
+    groups: [{
+      projects: [
+        {
+          slug: "port-soma", title: "SOMA — автоматическое портирование ассетов в игру", count: 0,
+          desc: "Окружение SOMA, перенесённое в Source Engine автоматическим пайплайном.",
+          tags: ["Automation", "Pipeline"],
+          videos: [{ src: "port-soma", label: "Автоматический порт" }]
+        },
+        {
+          slug: "port-manga", title: "Manga Style окружение — портирование ассетов в игру", count: 5,
+          desc: "Ручной порт стилизованных деревьев, растительности и пропов через Blender.",
+          tags: ["Blender", "Foliage"],
+          videos: [{ src: "port-manga", label: "Деревья из UE5, исходники" }]
+        },
+        {
+          slug: "port-alyx", title: "Half-Life: Alyx — портирование ассетов в игру", count: 10,
+          desc: "Ручной порт моделей и окружения Half-Life: Alyx в Source Engine.",
+          tags: ["Models", "Materials", "Hammer"],
+          videos: [{ src: "alyx-lods", label: "LOD и порт анимаций" }, { src: "alyx-antlions", label: "Портирование анимированных муравьиных львов" }]
+        }
+      ]
+    }]
+  },
+  {
+    id: "tools", nav: "Утилиты",
+    title: "Кастомные утилиты",
+    about: "Шейдеры для карт и игровая логика уровней.",
+    groups: [
+      {
+        title: "Шейдеры",
+        projects: [
+          {
+            slug: "shader-grass", title: "Вертексный шейдер для травы", count: 3,
+            desc: "Кастомный вертексный шейдер для травы.",
+            tags: ["Shader", "Foliage"],
+            videos: [{ src: "shader-grass-1", label: "Демонстрация Soft LOD и вида травы" }, { src: "shader-grass-2", label: "Поведение травы после приземления игрока" }]
+          },
+          {
+            slug: "shader-water", title: "Water Face Shader", count: 0,
+            desc: "Кастомный шейдер водной поверхности.",
+            tags: ["Shader", "Water"],
+            videos: [{ src: "shader-water", label: "Демонстрация" }]
+          },
+          {
+            slug: "shader-sky", title: "Шейдер Manga Sky", count: 0,
+            desc: "Кастомный шейдер неба в стилистике аниме.",
+            tags: ["Shader", "Manga Style"],
+            videos: [{ src: "shader-sky", label: "Демонстрация" }]
+          }
+        ]
+      },
+      {
+        title: "Логика уровня",
+        projects: [
+          {
+            slug: "logic", title: "Логика уровня", count: 0,
+            desc: "Триггеры, скриптовые сценарии и интерактивные события на картах.",
+            tags: ["Entities", "Triggers", "Scripted Events"],
+            videos: [
+              { src: "logic-reactor", label: "Взрыв реактора с логикой затопления, партиклами и звуковым сопровождением", year: 2024 },
+              { src: "logic-sluice", label: "Водный шлюз с логикой телепорта, партиклами и звуковым сопровождением", year: 2025 },
+              { src: "logic-antlion", label: "Концепт побега муравьиного льва", year: 2026 },
+              { src: "logic-antlion-2", label: "Концепт побега муравьиного льва, часть 2", year: 2026 },
+              { src: "logic-ks", label: "Логика К.С. SCP-106", year: 2024 },
+              { src: "logic-scp106", label: "Измерение SCP-106", year: 2024 }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
+
+const pad = n => String(n).padStart(2, "0");
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+const content = document.getElementById("content");
+const nav = document.getElementById("nav");
+const visible = SECTIONS.filter(s => s.groups.some(g => g.projects.length));
+
+function renderProject(p) {
+  const art = document.createElement("article");
+  art.className = "project"; art.id = p.slug;
+  const vids = p.videos.map(v => `
+    <figure class="video" style="margin:0">
+      <video controls preload="none" playsinline data-poster="media/video/${v.src}.jpg">
+        <source src="media/video/${v.src}.mp4" type="video/mp4">
+      </video>
+      <figcaption><span>${esc(v.label)}</span><span>${v.year ? v.year : esc(p.title)}</span></figcaption>
+    </figure>`).join("");
+  const thumb = i => `
+    <button type="button" data-i="${i}" aria-label="${esc(p.title)}, скриншот ${i + 1}">
+      <img loading="lazy" decoding="async" src="media/${p.slug}/thumb/${pad(i + 1)}.jpg" alt="${esc(p.title)}, скриншот ${i + 1}">
+      ${p.captions ? `<span class="cap"><b>${pad(i + 1)}</b>${esc(p.captions[i])}</span>` : ""}
+    </button>`;
+  const parts = p.parts || (p.count ? [{ from: 1, to: p.count }] : []);
+  const galleries = parts.map(part => {
+    const n = part.to - part.from + 1;
+    const collapsible = !p.wide && n > 8;
+    const imgs = Array.from({ length: n }, (_, k) => thumb(part.from - 1 + k)).join("");
+    return `
+      ${part.label ? `<p class="part-label">${esc(part.label)}</p>` : ""}
+      <div class="gallery${p.wide ? " wide" : ""}${p.steps ? " steps" : ""}${collapsible ? " collapsed" : ""}">${imgs}</div>
+      ${collapsible ? `<button class="show-all" type="button">Показать все скриншоты (${n})</button>` : ""}`;
+  }).join("");
+  const head = `
+    <div class="project-head"><h3>${esc(p.title)}</h3><div class="tags">${p.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div></div>
+    <p class="desc">${p.desc}</p>
+    ${p.extra ? `<details class="extra"><summary>${esc(p.extra.title)} <span>${p.extra.items.length}</span></summary>
+      <div class="tags">${p.extra.items.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div></details>` : ""}`;
+  art.innerHTML = `
+    ${p.videos.length === 1
+      ? `<div class="split"><div>${head}</div><div class="videos">${vids}</div></div>`
+      : head + (vids ? `<div class="videos">${vids}</div>` : "")}
+    ${galleries}`;
+  art.querySelectorAll(".gallery").forEach(gal => gal.addEventListener("click", e => {
+    const b = e.target.closest("button[data-i]");
+    if (b) openLb(p, +b.dataset.i);
+  }));
+  art.querySelectorAll(".show-all").forEach(more => more.addEventListener("click", () => {
+    more.previousElementSibling.classList.remove("collapsed");
+    more.remove();
+  }));
+  return art;
+}
+
+const railList = document.getElementById("rail-list");
+const shortTitle = t => t.split(" — ")[0];
+
+visible.forEach((s, si) => {
+  const sec = document.createElement("section");
+  sec.className = "section"; sec.id = s.id;
+  sec.innerHTML = `
+    <div class="section-head">
+      <span class="section-num">${pad(si + 1)}</span>
+      <h2>${esc(s.title)}</h2>
+      ${s.about ? `<p>${esc(s.about)}</p>` : ""}
+    </div>`;
+  const subs = [];
+  s.groups.filter(g => g.projects.length).forEach((g, gi) => {
+    if (g.title) {
+      const gid = `${s.id}-g${gi}`;
+      sec.insertAdjacentHTML("beforeend", `<h3 class="group-title" id="${gid}">${esc(g.title)}</h3>`);
+      subs.push({ id: gid, label: g.title });
+    }
+    g.projects.forEach(p => {
+      sec.appendChild(renderProject(p));
+      if (!g.title) subs.push({ id: p.slug, label: shortTitle(p.title) });
+    });
+  });
+  content.appendChild(sec);
+  railList.insertAdjacentHTML("beforeend", `
+    <li class="rail-sec" data-sec="${s.id}">
+      <a href="#${s.id}" data-target="${s.id}"><span class="lbl"><b>${pad(si + 1)}</b>${esc(s.nav)}</span><i></i></a>
+      <ol class="rail-subs">${subs.map(x => `
+        <li><a href="#${x.id}" data-target="${x.id}"><span class="lbl">${esc(x.label)}</span><i></i></a></li>`).join("")}
+      </ol>
+    </li>`);
+});
+nav.insertAdjacentHTML("beforeend", `<a class="nav-cta" href="#contacts"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 5h16v11H9l-5 4z"/></svg>Контакты</a>`);
+content.appendChild(document.getElementById("contacts"));
+
+/* Ленивые постеры видео */
+const posterIO = new IntersectionObserver(entries => entries.forEach(e => {
+  if (e.isIntersecting) { e.target.poster = e.target.dataset.poster; posterIO.unobserve(e.target); }
+}), { rootMargin: "600px 0px" });
+document.querySelectorAll("video[data-poster]").forEach(v => posterIO.observe(v));
+
+/* Discord: копирование ника */
+const dc = document.getElementById("discord");
+dc.addEventListener("click", () => {
+  const hint = dc.querySelector(".c-hint");
+  const done = () => { hint.textContent = "Скопировано ✓"; setTimeout(() => { hint.textContent = "Нажмите, чтобы скопировать"; }, 1600); };
+  if (navigator.clipboard) navigator.clipboard.writeText(dc.dataset.copy).then(done, () => {});
+});
+
+/* Только одно видео играет одновременно */
+document.addEventListener("play", e => {
+  document.querySelectorAll("video").forEach(v => { if (v !== e.target) v.pause(); });
+}, true);
+
+/* Шапка становится плотной после hero */
+const topbar = document.getElementById("topbar");
+const railLinks = [...document.querySelectorAll("#rail-list a")];
+const railTargets = railLinks.map(a => document.getElementById(a.dataset.target));
+const railFill = document.getElementById("rail-fill");
+let railTick = false;
+function updateRail() {
+  railTick = false;
+  const line = window.innerHeight * 0.35;
+  let active = -1;
+  railTargets.forEach((t, i) => { if (t && t.getBoundingClientRect().top <= line) active = i; });
+  // если секция и её первая подгруппа уже прошли линию, подсвечиваем самый глубокий элемент
+  railLinks.forEach((a, i) => a.classList.toggle("active", i === active));
+  const activeSec = active >= 0 ? railLinks[active].closest(".rail-sec") : null;
+  document.querySelectorAll(".rail-sec").forEach(li => li.classList.toggle("open", li === activeSec));
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  railFill.style.height = (max > 0 ? Math.min(100, window.scrollY / max * 100) : 0) + "%";
+}
+const onScroll = () => {
+  topbar.classList.toggle("solid", window.scrollY > window.innerHeight * 0.6);
+  if (!railTick) { railTick = true; requestAnimationFrame(updateRail); }
+};
+window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+/* Лайтбокс */
+const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCount = document.getElementById("lb-count");
+let cur = null, idx = 0;
+function show() {
+  lbImg.src = `media/${cur.slug}/${pad(idx + 1)}.jpg`;
+  lbImg.alt = `${cur.title}, скриншот ${idx + 1}`;
+  lbCount.textContent = `${cur.title} · ${idx + 1} / ${cur.count}`;
+  [idx - 1, idx + 1].forEach(j => { if (j >= 0 && j < cur.count) new Image().src = `media/${cur.slug}/${pad(j + 1)}.jpg`; });
+}
+function openLb(p, i) { cur = p; idx = i; show(); lb.classList.add("open"); document.body.style.overflow = "hidden"; }
+function closeLb() { lb.classList.remove("open"); document.body.style.overflow = ""; }
+function step(d) { idx = (idx + d + cur.count) % cur.count; show(); }
+document.getElementById("lb-close").onclick = closeLb;
+document.getElementById("lb-prev").onclick = () => step(-1);
+document.getElementById("lb-next").onclick = () => step(1);
+lb.addEventListener("click", e => { if (e.target === lb) closeLb(); });
+document.addEventListener("keydown", e => {
+  if (!lb.classList.contains("open")) return;
+  if (e.key === "Escape") closeLb();
+  if (e.key === "ArrowLeft") step(-1);
+  if (e.key === "ArrowRight") step(1);
+});
+let tx = null;
+lb.addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
+lb.addEventListener("touchend", e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+  tx = null;
+});
+</script>
+</body>
+</html>

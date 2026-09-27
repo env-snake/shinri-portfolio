@@ -537,7 +537,8 @@ const SECTIONS = [
               { src: "logic-antlion", label: "Концепт побега муравьиного льва", year: 2026 },
               { src: "logic-antlion-2", label: "Концепт побега муравьиного льва, часть 2", year: 2026 },
               { src: "logic-ks", label: "Логика камеры содержания SCP-106", year: 2024 },
-              { src: "logic-scp106", label: "Измерение SCP-106", year: 2024 }
+              { src: "logic-scp106", label: "Измерение SCP-106", year: 2024 },
+              { src: "logic-barricades", label: "Выдвижные баррикады и тесла-ворота" }
             ]
           }
         ]
@@ -561,7 +562,7 @@ function renderProject(p) {
       <video controls preload="none" playsinline data-poster="media/video/${v.src}.jpg">
         <source src="media/video/${v.src}.mp4" type="video/mp4">
       </video>
-      <figcaption><span>${esc(v.label)}</span><span>${v.year ? v.year : esc(p.title)}</span></figcaption>
+      <figcaption><span>${esc(v.label)}</span><span>${v.year ? v.year : (v.label.toLowerCase().includes(p.title.toLowerCase()) ? "" : esc(p.title))}</span></figcaption>
     </figure>`).join("");
   const thumb = i => `
     <button type="button" data-i="${i}" aria-label="${esc(p.title)}, скриншот ${i + 1}">

@@ -129,6 +129,7 @@
   .ico { width: 16px; height: 16px; flex: none; }
   .c-label .ico { width: 18px; height: 18px; color: var(--text); }
   .contact.preferred .c-label .ico { color: #29a9eb; }
+  .contact[href*="youtube"] .c-label .ico { color: #ff3b3b; }
   .old-links a { display: inline-flex; align-items: center; gap: 8px; }
   .hero-lead { font-size: clamp(16px, 1.5vw, 18px); color: #d6d3cd; max-width: 620px; margin: 18px 0 22px; }
   .hero-tg {
@@ -205,11 +206,18 @@
     .rail-sec > a.active .lbl b { color: var(--accent); }
   }
 
+  .project h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .project h3 .year {
+    display: inline-block;
+    font: 600 13px "Manrope", sans-serif; letter-spacing: .04em; color: var(--muted);
+    border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; white-space: nowrap;
+  }
+
   .part-label { margin: 22px 0 10px; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
   .part-label:first-child { margin-top: 0; }
 
   .contacts { padding-bottom: 40px; }
-  .contact-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+  .contact-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
   .contact {
     all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 6px; align-content: start;
     padding: 20px 22px; border-radius: var(--radius); background: var(--bg-2); border: 1px solid var(--line);
@@ -266,13 +274,13 @@
   <div class="hero-inner">
     <p class="eyebrow">Level Design &amp; Environment Art</p>
     <h1>Snake</h1>
-    <p class="hero-lead">В этом портфолио собраны мои последние достойные работы — то, что я делал и делаю на сегодняшний день. Некоторые из них ещё не&nbsp;завершены&nbsp;—&nbsp;W.I.P.</p>
+    <p class="hero-lead">В этом портфолио собрана часть моих последних достойных работ — то, что я делал и делаю на сегодняшний день. Некоторые из них ещё не&nbsp;завершены&nbsp;—&nbsp;W.I.P.</p>
     <a class="hero-tg" href="https://t.me/env_snk" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg><span>@env_snk</span></a>
   </div>
 </section>
 
 <main id="content"></main>
-<noscript><p style="padding:24px 16px;max-width:720px;margin:0 auto">Для просмотра портфолио включите JavaScript. Связаться: <a href="https://t.me/env_snk">Telegram @env_snk</a> · Discord env_snake · <a href="mailto:env_snake@hotmail.com">env_snake@hotmail.com</a></p></noscript>
+<noscript><p style="padding:24px 16px;max-width:720px;margin:0 auto">Для просмотра портфолио включите JavaScript. Связаться: <a href="https://t.me/env_snk">Telegram @env_snk</a> · Discord env_snake · <a href="https://www.youtube.com/@env_snake">YouTube</a> · <a href="mailto:env_snake@hotmail.com">env_snake@hotmail.com</a></p></noscript>
 
 <section class="section contacts" id="contacts">
   <div class="section-head">
@@ -294,9 +302,13 @@
       <span class="c-label"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>Steam</span>
       <span class="c-value">env_snake</span>
     </a>
+    <a class="contact" href="https://www.youtube.com/@env_snake" target="_blank" rel="noopener">
+      <span class="c-label"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</span>
+      <span class="c-value">@env_snake</span>
+    </a>
     <a class="contact" href="mailto:env_snake@hotmail.com">
       <span class="c-label"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 5.5h18v13H3z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="m3.5 6 8.5 7 8.5-7"/></svg>Email</span>
-      <span class="c-value">env_snake@hotmail.com</span>
+      <span class="c-value">env_snake<wbr>@hotmail.com</span>
     </a>
   </div>
   <div class="old-works">
@@ -339,7 +351,7 @@ const SECTIONS = [
         title: "Пайплайн",
         projects: [
           {
-            slug: "pipeline", title: "Пайплайн работы над локацией", count: 4, steps: true,
+            slug: "pipeline", title: "Пайплайн работы над локацией", year: "2025", count: 4, steps: true,
             captions: ["Референсы", "Грейбокс", "Настройка лайтинга, добавление деталей", "Финал"],
             desc: "Путь одной локации, созданной в 2025 году, от подборки референсов и грейбокса до финального вида с освещением и постобработкой.",
             tags: ["References", "Graybox", "Detailing", "Lighting"],
@@ -351,43 +363,43 @@ const SECTIONS = [
         title: "Manga Style",
         projects: [
           {
-            slug: "greenforest", title: "Green Forest", count: 17,
+            slug: "greenforest", title: "Green Forest", year: "2026", count: 17,
             desc: "Стилизованная локация на кастомных ассетах — созданных с нуля и портированных. На локации работают мой собственный <a href='#shader-grass'>вертексный шейдер травы</a> и <a href='#shader-sky'>стилизованный шейдер неба</a>.",
             tags: ["Exterior", "Foliage", "Lighting"],
             videos: [{ src: "greenforest", label: "Пролёт по карте" }]
           },
           {
-            slug: "ancientforest", title: "Ancient Forest", count: 20,
+            slug: "ancientforest", title: "Ancient Forest", year: "2026", count: 20,
             desc: "Ночной стилизованный лес на тех же ассетах, что и дневной, но с другим <code>$skin</code>. Локация сделана до появления кастомных шейдеров, поэтому на демонстрации они не используются.",
             tags: ["Exterior", "Foliage", "Lighting"],
             videos: [{ src: "forest-map", label: "Пролёт по карте" }, { src: "forest-dev", label: "Пролёт по карте" }]
           },
           {
-            slug: "konoha", title: "Konoha", count: 30,
+            slug: "konoha", title: "Konoha", year: "с 2025", count: 30,
             desc: "Масштабная деревня по тематике «Наруто» — деревня скрытого листа Коноха. Работа включает комплексные сооружения с интерьерами и открытые территории для PvP. Все ассеты кастомные: половина портирована прямиком из <a class='ext' href='https://www.fab.com/' target='_blank' rel='noopener'><img src='media/fab.png' alt=''>Fab</a>, другая половина создана с нуля. На фото и видео показана лишь малая часть проекта. Несмотря на большой объём проделанной работы, на сегодняшний день она всё ещё <span class='wip'>W.I.P.</span>",
             tags: ["Exterior", "Interior", "Lighting"],
             videos: [{ src: "konoha", label: "Пролёт по карте" }]
           },
           {
-            slug: "senju", title: "Senju", count: 24,
+            slug: "senju", title: "Senju", year: "2026", count: 24,
             desc: "Резиденция клана — часть деревни скрытого листа. Включает разные виды модульных комнат, все ассеты кастомные.",
             tags: ["Interior", "Lighting"],
             videos: [{ src: "senju-1", label: "Пролёт по локации" }, { src: "senju-2", label: "Прогулка по локации" }]
           },
           {
-            slug: "uchiwa", title: "Uchiwa", count: 21,
+            slug: "uchiwa", title: "Uchiwa", year: "2026", count: 21,
             desc: "Резиденция клана в деревне скрытого листа. Как и резиденция Senju, включает кластеры разных комнат.",
             tags: ["Interior", "Lighting"],
             videos: [{ src: "uchiwa", label: "Пролёт по локации" }]
           },
           {
-            slug: "hospital", title: "Hospital", count: 9,
+            slug: "hospital", title: "Hospital", year: "2026", count: 9,
             desc: "Больница Конохи: регистратура, коридоры, кабинеты, палаты и операционные. Сцена освещена с помощью кастомного шейдера <code>static_projected_light</code>, который позволяет добавлять детализированные источники света.",
             tags: ["Interior", "Lighting"],
             videos: []
           },
           {
-            slug: "yard", title: "Yard", count: 5,
+            slug: "yard", title: "Yard", year: "2026", count: 5,
             desc: "Двор у полицейского участка в деревне скрытого листа. Скриншоты сделаны пару месяцев назад, поэтому качество картинки заметно хуже, чем у резиденций и других сооружений Конохи.",
             tags: ["Exterior", "Lighting"],
             videos: []
@@ -398,7 +410,7 @@ const SECTIONS = [
         title: "Sci-Fi",
         projects: [
           {
-            slug: "combine", title: "Combine Sector", count: 21,
+            slug: "combine", title: "Combine Sector", year: "2026", count: 21,
             desc: "Сектор Альянса для RP-сервера по тематике HL2, сделан пару месяцев назад. Большинство ассетов я лично портировал из <a href='#port-alyx'>Half-Life: Alyx</a> с поддержкой LOD-систем. Для освещения используется шейдер <code>static_projected_light</code>.",
             tags: ["Interior", "Lighting", "Sci-Fi"],
             videos: [
@@ -408,13 +420,13 @@ const SECTIONS = [
             ]
           },
           {
-            slug: "underwater", title: "Underwater Facility", count: 15,
+            slug: "underwater", title: "Underwater Facility", year: "2024–2026", count: 15,
             desc: "Подводный комплекс, созданный мной для SCP-RP сервера. На карте есть кастомные ассеты, но большая часть работы сделана брашами с последующим переводом в модели.",
             tags: ["Interior", "Lighting", "Sci-Fi"],
             videos: [{ src: "underwater", label: "Пролёт по локации" }]
           },
           {
-            slug: "horror", title: "Horror Underwater Facility", count: 14,
+            slug: "horror", title: "Horror Underwater Facility", year: "2026", count: 14,
             parts: [{ label: "Морское дно", from: 1, to: 10 }, { label: "Технические отсеки", from: 11, to: 14 }],
             desc: "Новая версия морского дна и общий стиль для новой карты подводной станции. Карта работает с кластерами кастомных шейдеров, которые я сделал специально для этих локаций. Сцена собрана из ассетов игры <a href='https://store.steampowered.com/app/282140/SOMA/' target='_blank' rel='noopener'>SOMA</a>, портированных <a href='#port-soma'>автоматическим конвейером</a>, который я написал сам.",
             extra: {
@@ -561,7 +573,7 @@ function renderProject(p) {
       ${collapsible ? `<button class="show-all" type="button">Показать все скриншоты (${n})</button>` : ""}`;
   }).join("");
   const head = `
-    <div class="project-head"><h3>${esc(p.title)}</h3><div class="tags">${p.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div></div>
+    <div class="project-head"><h3>${esc(p.title)}${p.year ? `<span class="year">${esc(p.year)}</span>` : ""}</h3><div class="tags">${p.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div></div>
     <p class="desc">${p.desc}</p>
     ${p.extra ? `<details class="extra"><summary>${esc(p.extra.title)} <span>${p.extra.items.length}</span></summary>
       <div class="tags">${p.extra.items.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div></details>` : ""}`;
